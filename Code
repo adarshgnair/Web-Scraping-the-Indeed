@@ -1,0 +1,32 @@
+# Web-Scraping-the-Indeed
+The code explains how to Scrape Indeed website
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import NoSuchElementException
+import pandas as pd
+
+url = "http://www.indeed.com/cmp/Wells-Fargo/reviews"
+driver = webdriver.Chrome('C:\WinPython32\WinPython\chromedriver_win32\chromedriver.exe')
+driver.get(url)
+
+a=[]
+
+
+for i in range(25):
+    wait = WebDriverWait(driver, 5)
+    page_source = driver.page_source
+    soup = BeautifulSoup(page_source)
+    review=soup.findAll('span', {'class':'cmp-review-text'}, {'itemprop':"reviewBody"})
+    job_title=soup.findAll('span', {'class':'cmp-reviewer'})
+    for t in review:
+        try:
+            a.append(t.getText())
+            
+        except NoSuchElementException:
+            a.append('')
+            
+    driver.find_element_by_css_selector('.company_reviews_pagination_link_nav > span:nth-child(1)').click()
+            
+dataframe = pd.DataFrame({'reviews':a})
+dataframe.to_csv(r"wells_fargo_chase_reviews.csv",sep=',')
