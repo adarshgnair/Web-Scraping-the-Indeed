@@ -6,8 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 import pandas as pd
 
-url = "http://www.indeed.com/cmp/Wells-Fargo/reviews"
-driver = webdriver.Chrome('C:\WinPython32\WinPython\chromedriver_win32\chromedriver.exe')
+url = "http://www.indeed.com/cmp/Wells-Fargo/reviews" #To pull the reviews for Wells Fargo
+driver = webdriver.Chrome('chromedriver.exe')
 driver.get(url)
 
 a=[]
@@ -22,7 +22,6 @@ for i in range(25):
     for t in review:
         try:
             a.append(t.getText())
-            
         except NoSuchElementException:
             a.append('')
             
